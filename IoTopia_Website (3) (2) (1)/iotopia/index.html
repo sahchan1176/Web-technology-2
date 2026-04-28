@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="IoTopia – Learn the Internet of Things. Free educational resource covering IoT basics, applications, devices and tutorials." />
+  <!-- External CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Font Awesome icons (CDN) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- Internal CSS – hero-specific styles -->
+  <style>
+    /* Hero section */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      background-color: var(--secondary);   /* #0A1931 */
+      overflow: hidden;
+    }
+    /* Animated CSS grid background */
+    .hero-grid-bg {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,128,128,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,128,128,0.06) 1px, transparent 1px);
+      background-size: 46px 46px;
+    }
+    /* Radial glow */
+    .hero-glow {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 68% 72% at 78% 52%, rgba(0,128,128,0.19) 0%, transparent 65%);
+    }
+    /* CSS animation: scanline effect across hero */
+    .hero-scanline {
+      position: absolute; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent 0%, rgba(0,128,128,0.45) 50%, transparent 100%);
+      animation: scanLine 5s linear infinite;
+      pointer-events: none; z-index: 2;
+    }
+    .hero .container { position: relative; z-index: 3; }
+    .hero-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+
+    /* Eyebrow badge */
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,128,128,0.14);
+      border: 1px solid rgba(0,128,128,0.32);
+      border-radius: 100px;
+      padding: 7px 16px;
+      margin-bottom: 24px;
+      font-family: var(--font-heading);
+      font-size: 0.73rem; font-weight: 700;
+      color: var(--primary); letter-spacing: 0.11em; text-transform: uppercase;
+    }
+    .hero-eyebrow-dot {
+      width: 7px; height: 7px;
+      background: var(--primary); border-radius: 50%;
+      animation: pulseRing 1.8s ease-out infinite;
+    }
+    .hero h1 { color: var(--white); margin-bottom: 10px; }
+    .hero h1 em { color: var(--primary); font-style: normal; }
+
+    /* Typing line */
+    .typing-line {
+      font-family: var(--font-heading);
+      font-size: clamp(1.15rem, 2.5vw, 1.55rem);
+      font-weight: 600; color: var(--white);
+      margin-bottom: 22px; min-height: 2rem;
+    }
+    #typingText { color: var(--primary); }
+    .typing-cursor {
+      display: inline-block; width: 2px; height: 1.1em;
+      background: var(--primary); margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: blink 1.1s step-end infinite;
+    }
+    .hero-desc { color: rgba(255,255,255,0.68); font-size: 1.02rem; margin-bottom: 32px; max-width: 480px; }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    /* Stats strip */
+    .hero-stats {
+      display: flex; gap: 36px; margin-top: 48px;
+      padding-top: 36px; border-top: 1px solid rgba(255,255,255,0.07);
+      flex-wrap: wrap;
+    }
+    .hero-stat .num {
+      display: block;
+      font-family: var(--font-heading); font-size: 1.9rem; font-weight: 800;
+      color: var(--primary);
+    }
+    .hero-stat .lbl {
+      font-size: 0.78rem; color: rgba(255,255,255,0.48);
+      text-transform: uppercase; letter-spacing: 0.08em;
+    }
+
+    /* Hero SVG network diagram */
+    .hero-visual { animation: floatY 5s ease-in-out infinite; }
+
+    /* How IoT works strip */
+    .how-strip { background: var(--white); padding: 64px 0; }
+    .how-steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; position: relative; }
+    .how-steps::before {
+      content: ''; position: absolute;
+      top: 30px; left: 12.5%; right: 12.5%; height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary-lt));
+    }
+    .how-step { text-align: center; padding: 0 14px; position: relative; z-index: 1; }
+    .step-num {
+      width: 60px; height: 60px; border-radius: 50%;
+      background: var(--secondary); color: var(--white);
+      font-family: var(--font-heading); font-size: 1.35rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 18px; border: 3px solid var(--primary);
+    }
+    .how-step h4 { margin-bottom: 8px; }
+
+    /* Feature cards strip */
+    .features-strip { background: var(--bg); }
+    .feat-card { text-align: center; background: var(--white); border-radius: var(--radius); padding: 32px 20px; box-shadow: var(--shadow); transition: transform var(--transition), box-shadow var(--transition); }
+    .feat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .feat-card .card-icon { margin: 0 auto 16px; }
+
+    /* News cards */
+    .news-card .news-top { display: flex; align-items: center; justify-content: space-between; padding: 20px 20px 0; }
+    .news-icon { font-size: 1.8rem; }
+    .news-tag {
+      background: var(--accent); color: var(--primary-dark);
+      font-family: var(--font-heading); font-size: 0.72rem; font-weight: 700;
+      padding: 4px 12px; border-radius: 100px;
+    }
+    .news-date { font-size: 0.78rem; color: var(--grey-mid); margin-bottom: 7px; }
+    .news-more { color: var(--primary); font-weight: 600; font-size: 0.88rem; display: inline-block; margin-top: 10px; }
+
+    /* CTA banner */
+    .cta-banner {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary-lt) 100%);
+      padding: 72px 0; text-align: center;
+    }
+    .cta-banner h2, .cta-banner p { color: var(--white); }
+    .cta-banner p { opacity: 0.78; margin-bottom: 30px; }
+
+    @media (max-width: 768px) {
+      .hero-layout { grid-template-columns: 1fr; }
+      .hero-visual  { display: none; }
+      .how-steps    { grid-template-columns: repeat(2,1fr); }
+      .how-steps::before { display: none; }
+    }
+  </style>
+  <title>IoTopia – Learn the Internet of Things</title>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- NAVIGATION -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-logo" aria-label="IoTopia home">IoT<span>opia</span></a>
+      <ul class="nav-links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="applications.html">Applications</a></li>
+        <li><a href="devices.html">Devices</a></li>
+        <li><a href="tutorials.html">Tutorials</a></li>
+        <li><a href="news.html">News</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="btn btn-primary nav-cta">Contact Us</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main id="main-content">
+
+    <!-- Hero Section: CSS animation + typing + SVG network diagram + counters -->
+    <section class="hero" aria-label="Hero banner">
+      <div class="hero-grid-bg" aria-hidden="true"></div>
+      <div class="hero-glow"    aria-hidden="true"></div>
+      <div class="hero-scanline" aria-hidden="true"></div>
+      <div class="container">
+        <div class="hero-layout">
+          <!-- Content -->
+          <div class="anim-up">
+            <div class="hero-eyebrow">
+              <span class="hero-eyebrow-dot" aria-hidden="true"></span>
+              The Future is Connected
+            </div>
+            <h1>Understand <em>IoT</em> for the Real World</h1>
+            <p class="typing-line">
+              Powering <span id="typingText" aria-live="polite"></span><span class="typing-cursor" aria-hidden="true"></span>
+            </p>
+            <p class="hero-desc">
+              IoTopia makes the Internet of Things approachable for everyone — students, professionals and curious minds. Explore how connected devices are changing the world.
+            </p>
+            <div class="hero-btns">
+              <a href="applications.html" class="btn btn-primary">Start Learning <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+              <a href="tutorials.html"   class="btn btn-outline">View Tutorials</a>
+            </div>
+            <!-- Stats: 18B+ devices as per content plan -->
+            <div class="hero-stats">
+              <div class="hero-stat">
+                <span class="num counter" data-target="18" data-suffix="B+">0</span>
+                <span class="lbl">Connected Devices</span>
+              </div>
+              <div class="hero-stat">
+                <span class="num counter" data-target="7" data-suffix="">0</span>
+                <span class="lbl">Pages of Content</span>
+              </div>
+              <div class="hero-stat">
+                <span class="num counter" data-target="100" data-suffix="% Free">0</span>
+                <span class="lbl">To Access</span>
+              </div>
+            </div>
+          </div>
+          <!-- Hero SVG network diagram (as per content plan) -->
+          <div class="hero-visual anim-up delay-3" aria-label="IoT network diagram illustration" role="img">
+            <svg viewBox="0 0 460 400" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <!-- Central hub -->
+              <circle cx="230" cy="200" r="52" fill="#008080" opacity="0.13"/>
+              <circle cx="230" cy="200" r="36" fill="#008080" opacity="0.22"/>
+              <circle cx="230" cy="200" r="21" fill="#008080"/>
+              <text x="230" y="205" text-anchor="middle" fill="white" font-size="12" font-family="Inter,sans-serif" font-weight="700">IoT</text>
+              <!-- Orbit rings (CSS animated) -->
+              <circle cx="230" cy="200" r="76"  stroke="#008080" stroke-width="1" stroke-dasharray="6 4" opacity="0.28"/>
+              <circle cx="230" cy="200" r="118" stroke="#008080" stroke-width="1" stroke-dasharray="6 4" opacity="0.18"/>
+              <!-- Node: Smart Home -->
+              <circle cx="118" cy="118" r="26" fill="#14284A" stroke="#008080" stroke-width="1.5"/>
+              <text x="118" y="114" text-anchor="middle" font-size="14">🏠</text>
+              <text x="118" y="130" text-anchor="middle" fill="white" font-size="7.5" font-family="Inter,sans-serif">Smart Home</text>
+              <line x1="141" y1="136" x2="211" y2="181" stroke="#008080" stroke-width="1" opacity="0.45"/>
+              <!-- Node: Healthcare -->
+              <circle cx="356" cy="105" r="26" fill="#14284A" stroke="#008080" stroke-width="1.5"/>
+              <text x="356" y="101" text-anchor="middle" font-size="14">❤️</text>
+              <text x="356" y="117" text-anchor="middle" fill="white" font-size="7.5" font-family="Inter,sans-serif">Healthcare</text>
+              <line x1="333" y1="124" x2="258" y2="178" stroke="#008080" stroke-width="1" opacity="0.45"/>
+              <!-- Node: Industry -->
+              <circle cx="396" cy="228" r="26" fill="#14284A" stroke="#008080" stroke-width="1.5"/>
+              <text x="396" y="224" text-anchor="middle" font-size="14">🏭</text>
+              <text x="396" y="240" text-anchor="middle" fill="white" font-size="7.5" font-family="Inter,sans-serif">Industry</text>
+              <line x1="371" y1="228" x2="268" y2="210" stroke="#008080" stroke-width="1" opacity="0.45"/>
+              <!-- Node: Agriculture -->
+              <circle cx="316" cy="328" r="26" fill="#14284A" stroke="#008080" stroke-width="1.5"/>
+              <text x="316" y="324" text-anchor="middle" font-size="14">🌱</text>
+              <text x="316" y="340" text-anchor="middle" fill="white" font-size="7.5" font-family="Inter,sans-serif">Agriculture</text>
+              <line x1="298" y1="307" x2="248" y2="236" stroke="#008080" stroke-width="1" opacity="0.45"/>
+              <!-- Node: Transport -->
+              <circle cx="120" cy="310" r="26" fill="#14284A" stroke="#008080" stroke-width="1.5"/>
+              <text x="120" y="306" text-anchor="middle" font-size="14">🚗</text>
+              <text x="120" y="322" text-anchor="middle" fill="white" font-size="7.5" font-family="Inter,sans-serif">Transport</text>
+              <line x1="143" y1="293" x2="212" y2="228" stroke="#008080" stroke-width="1" opacity="0.45"/>
+              <!-- Node: Energy -->
+              <circle cx="66" cy="210" r="26" fill="#14284A" stroke="#008080" stroke-width="1.5"/>
+              <text x="66" y="206" text-anchor="middle" font-size="14">⚡</text>
+              <text x="66" y="222" text-anchor="middle" fill="white" font-size="7.5" font-family="Inter,sans-serif">Energy</text>
+              <line x1="91" y1="210" x2="208" y2="204" stroke="#008080" stroke-width="1" opacity="0.45"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feature strip: 4 cards as per content plan -->
+    <section class="features-strip section-sm">
+      <div class="container">
+        <div class="grid-4">
+          <div class="feat-card reveal delay-1">
+            <div class="card-icon" aria-hidden="true">📚</div>
+            <h4>Learn the Basics</h4>
+            <p>Clear, jargon-free explanations of IoT fundamentals for all skill levels.</p>
+          </div>
+          <div class="feat-card reveal delay-2">
+            <div class="card-icon" aria-hidden="true">🔧</div>
+            <h4>Hands-On Tutorials</h4>
+            <p>Step-by-step beginner guides to build your first IoT projects.</p>
+          </div>
+          <div class="feat-card reveal delay-3">
+            <div class="card-icon" aria-hidden="true">🌐</div>
+            <h4>Real-World Applications</h4>
+            <p>Explore how IoT transforms healthcare, agriculture and smart cities.</p>
+          </div>
+          <div class="feat-card reveal delay-4">
+            <div class="card-icon" aria-hidden="true">📰</div>
+            <h4>Latest IoT News</h4>
+            <p>Stay updated with recent developments in the world of IoT.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How IoT Works – 4 steps -->
+    <section class="how-strip" aria-labelledby="how-heading">
+      <div class="container text-center">
+        <span class="tag">How It Works</span>
+        <h2 id="how-heading" class="section-title">The IoT Ecosystem in 4 Steps</h2>
+        <p class="section-lead">Every IoT system follows the same fundamental flow — from physical sensing to intelligent action.</p>
+        <div class="how-steps reveal">
+          <div class="how-step">
+            <div class="step-num" aria-hidden="true">1</div>
+            <h4>Sense</h4>
+            <p>Physical sensors collect real-world data — temperature, motion, pressure and more.</p>
+          </div>
+          <div class="how-step">
+            <div class="step-num" aria-hidden="true">2</div>
+            <h4>Connect</h4>
+            <p>Data is transmitted via Wi-Fi, Bluetooth, 5G or LPWAN to the cloud or local gateway.</p>
+          </div>
+          <div class="how-step">
+            <div class="step-num" aria-hidden="true">3</div>
+            <h4>Process</h4>
+            <p>Cloud or edge computing analyses the data, often using AI and machine learning algorithms.</p>
+          </div>
+          <div class="how-step">
+            <div class="step-num" aria-hidden="true">4</div>
+            <h4>Act</h4>
+            <p>Insights trigger automated responses — adjusting systems, sending alerts or informing decisions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- News section – JS dynamically rendered cards (as per content plan) -->
+    <section class="section" style="background:var(--white);" aria-labelledby="news-heading">
+      <div class="container text-center">
+        <span class="tag">Latest News</span>
+        <h2 id="news-heading" class="section-title">What's Happening in IoT</h2>
+        <p class="section-lead">The latest developments, breakthroughs and trends — rendered dynamically with JavaScript.</p>
+        <!-- JS inserts 6 article cards here -->
+        <div id="newsGrid" class="grid-3" style="margin-bottom:36px;" aria-label="Latest IoT news articles"></div>
+        <a href="news.html" class="btn btn-ghost">View All News <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+      </div>
+    </section>
+
+    <!-- Community CTA -->
+    <section class="section-sm" style="background:var(--bg);" id="communityCtaSection">
+      <div class="container text-center">
+        <span class="tag">Community</span>
+        <h2 class="section-title">Share Your IoT Knowledge</h2>
+        <p class="section-lead" id="communityCtaText">Create a free account to publish your own IoT articles and tutorials for the community.</p>
+        <div id="communityCtaBtns" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;"></div>
+      </div>
+    </section>
+
+    <!-- CTA banner -->
+    <section class="cta-banner reveal" aria-label="Call to action">
+      <div class="container">
+        <span class="tag" style="background:rgba(255,255,255,0.15);color:var(--white);">Get Started Today</span>
+        <h2>Ready to explore the connected world?</h2>
+        <p>Start your IoT learning journey with our beginner-friendly tutorials and guides.</p>
+        <a href="tutorials.html" class="btn btn-primary">Start Learning Free <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo">IoT<span>opia</span></a>
+          <p>Your go-to resource for understanding the Internet of Things — from the basics to cutting-edge applications.</p>
+          <div class="social-links" style="margin-top:18px;">
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+            <a href="#" aria-label="YouTube"><i class="fab fa-youtube" aria-hidden="true"></i></a>
+            <a href="#" aria-label="GitHub"><i class="fab fa-github" aria-hidden="true"></i></a>
+          </div>
+        </div>
+        <div class="footer-col"><h4>Learn</h4><ul role="list"><li><a href="applications.html">What is IoT?</a></li><li><a href="applications.html">Applications</a></li><li><a href="devices.html">Devices</a></li><li><a href="tutorials.html">Tutorials</a></li></ul></div>
+        <div class="footer-col"><h4>Explore</h4><ul role="list"><li><a href="news.html">Latest News</a></li><li><a href="contact.html">FAQ</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+        <div class="footer-col"><h4>Legal</h4><ul role="list"><li><a href="#">Privacy Policy</a></li><li><a href="#">Cookie Policy</a></li><li><a href="#">Terms of Use</a></li><li><a href="#">Accessibility</a></li></ul></div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 IoTopia. All rights reserved. Educational use only.</p>
+        <p>Built with HTML5 &bull; CSS3 &bull; JavaScript &nbsp;|&nbsp; <a href="https://validator.w3.org" target="_blank" rel="noopener noreferrer">W3C Validated</a></p>
+      </div>
+    </div>
+  </footer>
+  <button id="scrollTop" aria-label="Scroll back to top"><i class="fas fa-chevron-up" aria-hidden="true"></i></button>
+  <script src="js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      var btns = document.getElementById('communityCtaBtns');
+      var text = document.getElementById('communityCtaText');
+      if (IoTopia.isLoggedIn()) {
+        var s = IoTopia.getSession();
+        text.textContent = 'Welcome back, ' + s.name.split(' ')[0] + '! Head to your dashboard to submit new content.';
+        btns.innerHTML = '<a href="dashboard.html" class="btn btn-primary">Go to My Dashboard <i class="fas fa-arrow-right"></i></a>';
+      } else {
+        btns.innerHTML =
+          '<a href="register.html" class="btn btn-primary">Create Free Account <i class="fas fa-user-plus"></i></a>' +
+          '<a href="login.html" class="btn btn-ghost">Log In</a>';
+      }
+    });
+  </script>
+  <script src="js/main.js"></script>
+</body>
+</html>

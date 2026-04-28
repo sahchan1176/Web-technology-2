@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="IoTopia – IoT Devices and Hardware. Compare popular development boards and explore common sensor types."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <!-- Internal CSS -->
+  <style>
+    /* Device cards grid (6 sensors as per content plan) */
+    .device-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+    .device-card { background:var(--white); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; transition:transform var(--transition),box-shadow var(--transition); }
+    .device-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+    .device-img { height:110px; background:linear-gradient(135deg,var(--secondary),var(--secondary-lt)); display:flex; align-items:center; justify-content:center; font-size:3.2rem; }
+    .device-body { padding:18px; }
+    .device-body h4 { margin-bottom:6px; }
+    .d-badge { display:inline-block; padding:3px 11px; border-radius:100px; font-size:0.72rem; font-weight:700; font-family:var(--font-heading); margin-bottom:9px; }
+    .d-consumer   { background:#E0FAF8; color:#006666; }
+    .d-industrial { background:#FFF3E0; color:#E65100; }
+    .d-healthcare { background:#FCE4EC; color:#C62828; }
+    .d-smartcity  { background:#E8EAF6; color:#283593; }
+    .d-agri       { background:#E8F5E9; color:#2E7D32; }
+    @media(max-width:768px){ .device-grid{ grid-template-columns:1fr; } }
+  </style>
+  <title>IoTopia – IoT Devices &amp; Hardware</title>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-logo">IoT<span>opia</span></a>
+      <ul class="nav-links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="applications.html">Applications</a></li>
+        <li><a href="devices.html" class="active">Devices</a></li>
+        <li><a href="tutorials.html">Tutorials</a></li>
+        <li><a href="news.html">News</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="btn btn-primary nav-cta">Contact Us</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+  <header class="page-header">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><span aria-current="page">Devices &amp; Hardware</span></nav>
+      <h1>IoT Devices &amp; Hardware</h1>
+      <p>A comprehensive guide to popular IoT development boards, sensors and hardware platforms.</p>
+    </div>
+  </header>
+  <main id="main-content">
+
+    <!-- HTML Table: 8 columns x 7 data rows (required: 4+ cols, 4+ rows, CSS styled) -->
+    <section class="section" style="background:var(--white);" aria-labelledby="table-heading">
+      <div class="container text-center">
+        <span class="tag">Comparison Table</span>
+        <h2 id="table-heading" class="section-title">Popular IoT Development Boards</h2>
+        <p class="section-lead">Comparing the most widely used hardware platforms for building IoT projects — styled with CSS.</p>
+        <div class="table-wrap reveal">
+          <table aria-label="IoT development boards comparison">
+            <thead>
+              <tr>
+                <th scope="col">Device</th>
+                <th scope="col">Processor</th>
+                <th scope="col">Connectivity</th>
+                <th scope="col">GPIO Pins</th>
+                <th scope="col">Voltage</th>
+                <th scope="col">Use Case</th>
+                <th scope="col">Skill Level</th>
+                <th scope="col">Price (GBP)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Raspberry Pi 5</strong></td><td>Cortex-A76 2.4GHz Quad</td><td>Wi-Fi, Bluetooth 5.0, Ethernet</td><td>40</td><td>5V</td><td>Smart hub, edge AI, media</td><td><span class="tbl-badge tbl-intermediate">Intermediate</span></td><td>~£60</td></tr>
+              <tr><td><strong>Arduino Uno R4</strong></td><td>RA4M1 48MHz 32-bit</td><td>Wi-Fi, Bluetooth (WiFi model)</td><td>20</td><td>5V</td><td>Sensor prototyping, automation</td><td><span class="tbl-badge tbl-beginner">Beginner</span></td><td>~£18</td></tr>
+              <tr><td><strong>ESP32</strong></td><td>Xtensa LX6 240MHz Dual</td><td>Wi-Fi 802.11b/g/n, BLE</td><td>34</td><td>3.3V</td><td>Connected sensors, MQTT nodes</td><td><span class="tbl-badge tbl-intermediate">Intermediate</span></td><td>~£5</td></tr>
+              <tr><td><strong>BBC micro:bit v2</strong></td><td>nRF52833 64MHz</td><td>Bluetooth 5.0, 2.4GHz radio</td><td>25</td><td>3.3V</td><td>Education, wearable prototyping</td><td><span class="tbl-badge tbl-beginner">Beginner</span></td><td>~£15</td></tr>
+              <tr><td><strong>Raspberry Pi Pico W</strong></td><td>RP2040 133MHz Dual</td><td>Wi-Fi 802.11n, Bluetooth 5.2</td><td>26</td><td>3.3V</td><td>Low-power sensors, data loggers</td><td><span class="tbl-badge tbl-beginner">Beginner</span></td><td>~£7</td></tr>
+              <tr><td><strong>NVIDIA Jetson Nano</strong></td><td>Cortex-A57 1.43GHz Quad</td><td>Gigabit Ethernet, USB 3.0</td><td>40</td><td>5V</td><td>Edge AI, computer vision</td><td><span class="tbl-badge tbl-advanced">Advanced</span></td><td>~£90</td></tr>
+              <tr><td><strong>Particle Boron</strong></td><td>nRF52840 64MHz</td><td>LTE-M / NB-IoT, Bluetooth 5.0</td><td>20</td><td>3.6V</td><td>Remote asset tracking</td><td><span class="tbl-badge tbl-intermediate">Intermediate</span></td><td>~£50</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 sensor cards (content plan: sensor type descriptions) -->
+    <section class="section" style="background:var(--bg);" aria-labelledby="sensors-heading">
+      <div class="container text-center">
+        <span class="tag">Sensors</span>
+        <h2 id="sensors-heading" class="section-title">Common IoT Sensors</h2>
+        <p class="section-lead">Sensors are the eyes and ears of IoT systems — here are the six most commonly used types.</p>
+        <div class="device-grid reveal">
+          <div class="device-card">
+            <div class="device-img" aria-hidden="true">🌡️</div>
+            <div class="device-body">
+              <span class="d-badge d-consumer">Environmental</span>
+              <h4>Temperature &amp; Humidity</h4>
+              <p>DHT11, DHT22 and BME280 sensors measure ambient conditions. Essential for smart home and agricultural applications.</p>
+            </div>
+          </div>
+          <div class="device-card">
+            <div class="device-img" aria-hidden="true">📡</div>
+            <div class="device-body">
+              <span class="d-badge d-smartcity">Motion</span>
+              <h4>PIR Motion Sensors</h4>
+              <p>Passive infrared sensors detect people by measuring infrared radiation changes. Used in security and smart lighting.</p>
+            </div>
+          </div>
+          <div class="device-card">
+            <div class="device-img" aria-hidden="true">🌊</div>
+            <div class="device-body">
+              <span class="d-badge d-agri">Soil &amp; Water</span>
+              <h4>Soil Moisture Sensors</h4>
+              <p>Capacitive and resistive sensors measure soil water content for precision irrigation systems in agriculture.</p>
+            </div>
+          </div>
+          <div class="device-card">
+            <div class="device-img" aria-hidden="true">❤️</div>
+            <div class="device-body">
+              <span class="d-badge d-healthcare">Health</span>
+              <h4>Pulse Oximeter</h4>
+              <p>MAX30102 sensors measure blood oxygen saturation (SpO2) and heart rate for wearable health monitoring.</p>
+            </div>
+          </div>
+          <div class="device-card">
+            <div class="device-img" aria-hidden="true">💨</div>
+            <div class="device-body">
+              <span class="d-badge d-smartcity">Air Quality</span>
+              <h4>Gas &amp; Air Quality</h4>
+              <p>MQ-series sensors detect CO₂, methane and carbon monoxide for safety and environmental monitoring.</p>
+            </div>
+          </div>
+          <div class="device-card">
+            <div class="device-img" aria-hidden="true">📏</div>
+            <div class="device-body">
+              <span class="d-badge d-industrial">Industrial</span>
+              <h4>Ultrasonic Distance</h4>
+              <p>HC-SR04 sensors use sound waves to measure distance — used in parking sensors and tank level monitoring.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="index.html" class="nav-logo">IoT<span>opia</span></a><p>Your go-to resource for understanding the Internet of Things.</p></div>
+        <div class="footer-col"><h4>Learn</h4><ul><li><a href="applications.html">What is IoT?</a></li><li><a href="applications.html">Applications</a></li><li><a href="devices.html">Devices</a></li><li><a href="tutorials.html">Tutorials</a></li></ul></div>
+        <div class="footer-col"><h4>Explore</h4><ul><li><a href="news.html">Latest News</a></li><li><a href="contact.html">FAQ</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+        <div class="footer-col"><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Cookie Policy</a></li><li><a href="#">Terms of Use</a></li><li><a href="#">Accessibility</a></li></ul></div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2025 IoTopia. Educational use only.</p><p>HTML5 &bull; CSS3 &bull; JavaScript</p></div>
+    </div>
+  </footer>
+  <button id="scrollTop" aria-label="Scroll back to top"><i class="fas fa-chevron-up"></i></button>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="IoTopia – Log in to your account to submit articles and tutorials."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <title>IoTopia – Log In</title>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-logo">IoT<span>opia</span></a>
+      <ul class="nav-links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="applications.html">Applications</a></li>
+        <li><a href="devices.html">Devices</a></li>
+        <li><a href="tutorials.html">Tutorials</a></li>
+        <li><a href="news.html">News</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="btn btn-primary nav-cta">Contact Us</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- LOGIN FORM -->
+  <main class="auth-page" id="main-content">
+    <div class="auth-card">
+      <a href="index.html" class="auth-logo">IoT<span>opia</span></a>
+      <h1>Welcome back</h1>
+      <p class="auth-sub">Log in to your IoTopia account to submit articles and tutorials.</p>
+
+      <div class="auth-alert" id="loginAlert" role="alert"></div>
+
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="loginEmail">Email Address *</label>
+          <input type="email" id="loginEmail" name="email" placeholder="your@email.com"
+                 autocomplete="email" aria-required="true"/>
+          <span class="form-error" id="loginEmailErr" role="alert"></span>
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Password *</label>
+          <!-- Inline CSS to show/hide password button -->
+          <div style="position:relative;">
+            <input type="password" id="loginPassword" name="password" placeholder="Your password"
+                   autocomplete="current-password" aria-required="true" style="padding-right:48px;"/>
+            <button type="button" onclick="togglePwd('loginPassword',this)"
+                    style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--grey-mid);font-size:1rem;"
+                    aria-label="Toggle password visibility">
+              <i class="fas fa-eye" aria-hidden="true"></i>
+            </button>
+          </div>
+          <span class="form-error" id="loginPasswordErr" role="alert"></span>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;margin-top:8px;">
+          Log In <i class="fas fa-arrow-right" aria-hidden="true"></i>
+        </button>
+      </form>
+
+      <div class="auth-divider"><span>or</span></div>
+      <div class="auth-switch">
+        Don't have an account? <a href="register.html">Create one free</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // Redirect if already logged in
+    if (IoTopia.isLoggedIn()) window.location.href = 'dashboard.html';
+
+    function togglePwd(id, btn) {
+      var inp = document.getElementById(id);
+      var isText = inp.type === 'text';
+      inp.type = isText ? 'password' : 'text';
+      btn.querySelector('i').className = isText ? 'fas fa-eye' : 'fas fa-eye-slash';
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var email    = document.getElementById('loginEmail').value;
+      var password = document.getElementById('loginPassword').value;
+      var alert    = document.getElementById('loginAlert');
+      var emailErr = document.getElementById('loginEmailErr');
+      var pwdErr   = document.getElementById('loginPasswordErr');
+
+      // Reset errors
+      alert.className = 'auth-alert';
+      emailErr.classList.remove('show');
+      pwdErr.classList.remove('show');
+
+      var valid = true;
+      if (!email.trim()) {
+        emailErr.textContent = 'Please enter your email address.';
+        emailErr.classList.add('show');
+        document.getElementById('loginEmail').classList.add('input-error');
+        valid = false;
+      }
+      if (!password) {
+        pwdErr.textContent = 'Please enter your password.';
+        pwdErr.classList.add('show');
+        document.getElementById('loginPassword').classList.add('input-error');
+        valid = false;
+      }
+      if (!valid) return;
+
+      var result = IoTopia.login(email, password);
+      if (result.ok) {
+        alert.className = 'auth-alert success';
+        alert.textContent = 'Login successful! Redirecting to your dashboard…';
+        setTimeout(function() { window.location.href = 'dashboard.html'; }, 1000);
+      } else {
+        alert.className = 'auth-alert error';
+        alert.textContent = result.msg;
+      }
+    });
+  </script>
+</body>
+</html>

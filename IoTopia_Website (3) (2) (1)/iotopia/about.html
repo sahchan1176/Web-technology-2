@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="IoTopia – About Us. Our mission, values and the team behind IoTopia."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <!-- Internal CSS -->
+  <style>
+    /* Team cards (CSS flex layout as per content plan) */
+    .team-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:26px; }
+    .team-card { background:var(--white); border-radius:var(--radius); box-shadow:var(--shadow); padding:30px 22px; text-align:center; transition:transform var(--transition); }
+    .team-card:hover { transform:translateY(-4px); }
+    .team-avatar { width:76px; height:76px; border-radius:50%; background:linear-gradient(135deg,var(--primary),var(--secondary-lt)); margin:0 auto 14px; display:flex; align-items:center; justify-content:center; font-size:1.9rem; }
+    .team-role { color:var(--primary); font-family:var(--font-heading); font-size:0.83rem; font-weight:600; margin-bottom:10px; display:block; }
+    /* Values grid (4 core values as per content plan) */
+    .values-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:22px; max-width:780px; margin:0 auto; }
+    .value-row { display:flex; gap:14px; align-items:flex-start; }
+    .v-icon { width:42px; height:42px; background:var(--accent); border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:1.25rem; flex-shrink:0; }
+    /* Mission banner */
+    .mission-banner {
+      background:linear-gradient(135deg,var(--secondary),var(--secondary-lt));
+      border-radius:var(--radius-lg); padding:48px 40px; text-align:center;
+    }
+    .mission-banner h2 { color:var(--white); margin-bottom:14px; }
+    .mission-banner p  { color:rgba(255,255,255,0.68); font-size:1.02rem; max-width:520px; margin:0 auto; }
+    /* Stats row (CSS flex card layout + counter animation as per content plan) */
+    .stats-row { display:flex; gap:0; background:var(--secondary); }
+    .stat-item { flex:1; text-align:center; padding:36px 16px; border-right:1px solid rgba(255,255,255,0.07); }
+    .stat-item:last-child { border-right:none; }
+    .stat-item .snum { font-family:var(--font-heading); font-size:2rem; font-weight:800; color:var(--primary); display:block; }
+    .stat-item .slbl { font-size:0.78rem; color:rgba(255,255,255,0.48); text-transform:uppercase; letter-spacing:0.08em; }
+    @media(max-width:768px){ .team-grid,.values-grid{grid-template-columns:1fr;} .stats-row{flex-direction:column;} .stat-item{border-right:none; border-bottom:1px solid rgba(255,255,255,0.07);} }
+  </style>
+  <title>IoTopia – About Us</title>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-logo">IoT<span>opia</span></a>
+      <ul class="nav-links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="applications.html">Applications</a></li>
+        <li><a href="devices.html">Devices</a></li>
+        <li><a href="tutorials.html">Tutorials</a></li>
+        <li><a href="news.html">News</a></li>
+        <li><a href="about.html" class="active">About</a></li>
+        <li><a href="contact.html" class="btn btn-primary nav-cta">Contact Us</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+  <header class="page-header">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><span aria-current="page">About Us</span></nav>
+      <h1>About IoTopia</h1>
+      <p>We are on a mission to make IoT education accessible, engaging and useful for everyone.</p>
+    </div>
+  </header>
+  <main id="main-content">
+
+    <!-- Mission statement (content plan) -->
+    <section class="section" style="background:var(--white);" aria-labelledby="mission-heading">
+      <div class="container">
+        <div class="grid-2" style="align-items:center;gap:56px;">
+          <div class="anim-up">
+            <span class="tag">Our Mission</span>
+            <h2 id="mission-heading" class="section-title">Making IoT Accessible to Everyone</h2>
+            <!-- Mission statement paragraph (content plan) -->
+            <p>IoTopia was created with one simple belief: understanding the Internet of Things should not require a computer science degree. Millions of people interact with IoT devices every single day — smart speakers, fitness trackers, connected appliances — yet most have little understanding of how these technologies work or why they matter.</p>
+            <p>We set out to change that. IoTopia provides clear, well-structured and regularly updated educational content covering everything from the absolute basics of IoT to hands-on tutorials and the latest industry news.</p>
+            <p>Whether you are a curious beginner, a student researching a project, or a professional looking to expand your knowledge, IoTopia has something for you.</p>
+          </div>
+          <!-- Mission banner graphic (content plan) -->
+          <div class="mission-banner reveal" aria-label="IoTopia mission statement quote">
+            <h2 style="font-size:clamp(1.2rem,2.5vw,1.6rem);">"Connecting curious minds<br>to a connected world."</h2>
+            <p>The IoTopia team is passionate about technology education and the positive impact IoT can have on healthcare, sustainability and everyday life.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Four core values (content plan) -->
+    <section class="section" style="background:var(--bg);" aria-labelledby="values-heading">
+      <div class="container text-center">
+        <span class="tag">Our Values</span>
+        <h2 id="values-heading" class="section-title">What We Stand For</h2>
+        <p class="section-lead">Everything we create at IoTopia is guided by four core principles.</p>
+        <div class="values-grid reveal">
+          <div class="value-row"><div class="v-icon" aria-hidden="true">🎯</div><div style="text-align:left;"><h4>Accuracy</h4><p>Every piece of content is carefully researched and kept up to date with the latest developments in the IoT industry.</p></div></div>
+          <div class="value-row"><div class="v-icon" aria-hidden="true">🤝</div><div style="text-align:left;"><h4>Accessibility</h4><p>We write for real people, not just engineers. Plain language, clear explanations and no unnecessary jargon.</p></div></div>
+          <div class="value-row"><div class="v-icon" aria-hidden="true">🔒</div><div style="text-align:left;"><h4>Privacy First</h4><p>We are committed to GDPR compliance and respect for user data. We never sell personal information to third parties.</p></div></div>
+          <div class="value-row"><div class="v-icon" aria-hidden="true">♻️</div><div style="text-align:left;"><h4>Sustainability</h4><p>We highlight how IoT can contribute to a more sustainable future and responsible technology use.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Three team member bios (content plan) -->
+    <section class="section" style="background:var(--white);" aria-labelledby="team-heading">
+      <div class="container text-center">
+        <span class="tag">Our Team</span>
+        <h2 id="team-heading" class="section-title">The People Behind IoTopia</h2>
+        <p class="section-lead">A small team of technology enthusiasts, educators and developers committed to quality IoT education.</p>
+        <div class="team-grid reveal">
+          <!-- Team member 1 -->
+          <div class="team-card">
+            <div class="team-avatar" aria-hidden="true">👩‍💻</div>
+            <h4>Aisha Rahman</h4>
+            <span class="team-role">Founder &amp; Lead Developer</span>
+            <p>Computer Science graduate specialising in embedded systems and IoT architecture. Passionate about making technical education inclusive and accessible.</p>
+          </div>
+          <!-- Team member 2 -->
+          <div class="team-card">
+            <div class="team-avatar" aria-hidden="true">👨‍🔬</div>
+            <h4>Marcus Chen</h4>
+            <span class="team-role">Content &amp; Research Lead</span>
+            <p>Technology journalist and researcher with eight years of experience covering IoT, AI and emerging technologies for academic and public audiences.</p>
+          </div>
+          <!-- Team member 3 -->
+          <div class="team-card">
+            <div class="team-avatar" aria-hidden="true">👩‍🎨</div>
+            <h4>Sophie Okonkwo</h4>
+            <span class="team-role">UX Designer</span>
+            <p>UX specialist focused on accessible design and educational interfaces. Ensures IoTopia is usable and enjoyable for people of all abilities and backgrounds.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats row with counter animations (content plan) -->
+    <div class="stats-row" role="region" aria-label="IoTopia statistics">
+      <div class="stat-item">
+        <span class="snum counter" data-target="18" data-suffix="B+">0</span>
+        <span class="slbl">IoT Devices Worldwide</span>
+      </div>
+      <div class="stat-item">
+        <span class="snum counter" data-target="9" data-suffix="">0</span>
+        <span class="slbl">Pages of Content</span>
+      </div>
+      <div class="stat-item">
+        <span class="snum counter" data-target="4" data-suffix="">0</span>
+        <span class="slbl">Hands-On Tutorials</span>
+      </div>
+      <div class="stat-item">
+        <span class="snum counter" data-target="100" data-suffix="%">0</span>
+        <span class="slbl">Free to Access</span>
+      </div>
+    </div>
+
+  </main>
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="index.html" class="nav-logo">IoT<span>opia</span></a><p>Your go-to resource for understanding the Internet of Things.</p></div>
+        <div class="footer-col"><h4>Learn</h4><ul><li><a href="applications.html">What is IoT?</a></li><li><a href="applications.html">Applications</a></li><li><a href="devices.html">Devices</a></li><li><a href="tutorials.html">Tutorials</a></li></ul></div>
+        <div class="footer-col"><h4>Explore</h4><ul><li><a href="news.html">Latest News</a></li><li><a href="contact.html">FAQ</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+        <div class="footer-col"><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Cookie Policy</a></li><li><a href="#">Terms of Use</a></li><li><a href="#">Accessibility</a></li></ul></div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2025 IoTopia. Educational use only.</p><p>HTML5 &bull; CSS3 &bull; JavaScript</p></div>
+    </div>
+  </footer>
+  <button id="scrollTop" aria-label="Scroll back to top"><i class="fas fa-chevron-up"></i></button>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

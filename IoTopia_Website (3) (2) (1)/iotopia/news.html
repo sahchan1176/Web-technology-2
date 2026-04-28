@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="IoTopia – Latest IoT news and articles. Stay updated with developments in the Internet of Things."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <!-- Internal CSS -->
+  <style>
+    .filter-bar { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:32px; }
+    .filter-btn { padding:8px 18px; border-radius:100px; border:2px solid var(--grey-light); background:var(--white); font-family:var(--font-heading); font-size:0.83rem; font-weight:600; color:var(--text-muted); cursor:pointer; transition:all var(--transition); }
+    .filter-btn:hover,.filter-btn.active { background:var(--primary); border-color:var(--primary); color:var(--white); }
+    /* News card styles used by JS-rendered cards */
+    .news-card .news-top { display:flex; align-items:center; justify-content:space-between; padding:20px 20px 0; }
+    .news-icon { font-size:1.9rem; }
+    .news-tag { background:var(--accent); color:var(--primary-dark); font-family:var(--font-heading); font-size:0.72rem; font-weight:700; padding:4px 12px; border-radius:100px; }
+    .news-date { font-size:0.78rem; color:var(--grey-mid); margin-bottom:7px; }
+    .news-more { color:var(--primary); font-weight:600; font-size:0.88rem; display:inline-block; margin-top:10px; }
+  </style>
+  <title>IoTopia – News &amp; Articles</title>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-logo">IoT<span>opia</span></a>
+      <ul class="nav-links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="applications.html">Applications</a></li>
+        <li><a href="devices.html">Devices</a></li>
+        <li><a href="tutorials.html">Tutorials</a></li>
+        <li><a href="news.html" class="active">News</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="btn btn-primary nav-cta">Contact Us</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+  <header class="page-header">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><span aria-current="page">News &amp; Articles</span></nav>
+      <h1>IoT News &amp; Articles</h1>
+      <p>The latest developments, breakthroughs and trends in the world of IoT — rendered dynamically with JavaScript.</p>
+    </div>
+  </header>
+  <main id="main-content">
+    <section class="section" style="background:var(--bg);" aria-labelledby="news-heading">
+      <div class="container">
+        <h2 id="news-heading" class="section-title" style="margin-bottom:24px;">Latest Articles</h2>
+        <!-- Filter buttons (content plan: filter buttons) -->
+        <div class="filter-bar" role="group" aria-label="Filter articles by category">
+          <button class="filter-btn active">All</button>
+          <button class="filter-btn">Smart Home</button>
+          <button class="filter-btn">Healthcare</button>
+          <button class="filter-btn">Industry</button>
+          <button class="filter-btn">Security</button>
+          <button class="filter-btn">Agriculture</button>
+        </div>
+        <!-- JS dynamically renders 6 article cards here (content plan) -->
+        <div id="userArticlesSection" style="margin-bottom:40px;display:none;">
+          <h3 style="margin-bottom:18px;color:var(--navy);font-family:var(--font-heading);">
+            <i class="fas fa-users" style="color:var(--primary);margin-right:8px;"></i>
+            Community Articles
+          </h3>
+          <div id="userArticlesGrid" class="grid-3" style="margin-bottom:16px;"></div>
+          <hr style="border:none;border-top:1px solid var(--grey-light);margin-bottom:32px;"/>
+        </div>
+        <h3 style="margin-bottom:18px;color:var(--navy);font-family:var(--font-heading);">
+          <i class="fas fa-newspaper" style="color:var(--primary);margin-right:8px;"></i>
+          Latest IoT News
+        </h3>
+        <div id="newsGrid" class="grid-3" aria-label="IoT news articles" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="index.html" class="nav-logo">IoT<span>opia</span></a><p>Your go-to resource for understanding the Internet of Things.</p></div>
+        <div class="footer-col"><h4>Learn</h4><ul><li><a href="applications.html">What is IoT?</a></li><li><a href="applications.html">Applications</a></li><li><a href="devices.html">Devices</a></li><li><a href="tutorials.html">Tutorials</a></li></ul></div>
+        <div class="footer-col"><h4>Explore</h4><ul><li><a href="news.html">Latest News</a></li><li><a href="contact.html">FAQ</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+        <div class="footer-col"><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Cookie Policy</a></li><li><a href="#">Terms of Use</a></li><li><a href="#">Accessibility</a></li></ul></div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2025 IoTopia. Educational use only.</p><p>HTML5 &bull; CSS3 &bull; JavaScript</p></div>
+    </div>
+  </footer>
+  <button id="scrollTop" aria-label="Scroll back to top"><i class="fas fa-chevron-up"></i></button>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var userArticles = IoTopia.getArticles();
+      var section = document.getElementById('userArticlesSection');
+      var grid    = document.getElementById('userArticlesGrid');
+
+      if (userArticles.length) {
+        section.style.display = 'block';
+        grid.innerHTML = userArticles.slice(0, 6).map(function(a) {
+          return '<article class="card news-card">' +
+            '<div class="news-top">' +
+              '<span class="news-icon" aria-hidden="true">✍️</span>' +
+              '<span class="news-tag">' + a.category + '</span>' +
+            '</div>' +
+            '<div class="card-body">' +
+              '<p class="news-date">' + a.date + ' · by ' + a.authorName + '</p>' +
+              '<h3>' + a.title + '</h3>' +
+              '<p>' + a.summary + '</p>' +
+            '</div>' +
+          '</article>';
+        }).join('');
+      }
+    });
+  </script>
+</body>
+</html>

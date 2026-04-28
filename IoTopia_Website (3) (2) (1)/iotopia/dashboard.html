@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="IoTopia Dashboard – manage your articles and tutorials."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    /* Page-specific internal CSS */
+    .dash-welcome {
+      background: linear-gradient(135deg, var(--secondary), var(--secondary-lt));
+      border-radius: var(--radius-lg);
+      padding: 32px 36px;
+      color: var(--white);
+      margin-bottom: 24px;
+    }
+    .dash-welcome h2 { color: var(--white); margin-bottom: 6px; }
+    .dash-welcome p  { color: rgba(255,255,255,0.68); margin: 0; }
+    .dash-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 24px; }
+    .dash-stat-box { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 20px 16px; text-align: center; }
+    .dash-stat-box .dsb-num { font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800;
+      color: var(--primary); display: block; }
+    .dash-stat-box .dsb-lbl { font-size: 0.78rem; color: var(--grey-mid); text-transform: uppercase;
+      letter-spacing: 0.07em; }
+    .empty-state { text-align: center; padding: 48px 24px; color: var(--grey-mid); }
+    .empty-state i { font-size: 2.5rem; color: var(--grey-light); display: block; margin-bottom: 14px; }
+    .empty-state p { margin: 0 0 16px; }
+    /* Step inputs */
+    .step-fields textarea { min-height: 80px; }
+    .form-group textarea { min-height: 100px; }
+  </style>
+  <title>IoTopia – My Dashboard</title>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-logo">IoT<span>opia</span></a>
+      <ul class="nav-links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="applications.html">Applications</a></li>
+        <li><a href="devices.html">Devices</a></li>
+        <li><a href="tutorials.html">Tutorials</a></li>
+        <li><a href="news.html">News</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="btn btn-primary nav-cta">Contact Us</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + 32px); padding-bottom: 60px;">
+    <div class="container">
+
+      <!-- Welcome banner -->
+      <div class="dash-welcome">
+        <h2 id="dashWelcome">Welcome back!</h2>
+        <p>Share your IoT knowledge — submit articles and tutorials to the IoTopia community.</p>
+      </div>
+
+      <!-- Stats row -->
+      <div class="dash-stats">
+        <div class="dash-stat-box">
+          <span class="dsb-num" id="statArticles">0</span>
+          <span class="dsb-lbl">Articles Published</span>
+        </div>
+        <div class="dash-stat-box">
+          <span class="dsb-num" id="statTutorials">0</span>
+          <span class="dsb-lbl">Tutorials Published</span>
+        </div>
+        <div class="dash-stat-box">
+          <span class="dsb-num" id="statJoined">–</span>
+          <span class="dsb-lbl">Member Since</span>
+        </div>
+      </div>
+
+      <div class="dashboard-layout">
+
+        <!-- Sidebar -->
+        <aside class="dash-sidebar">
+          <div class="dash-avatar-lg" id="sidebarAvatar">?</div>
+          <div class="dash-name"  id="sidebarName">Loading…</div>
+          <div class="dash-email" id="sidebarEmail"></div>
+          <ul class="dash-nav" role="list">
+            <li><a href="#" class="active" onclick="showPanel('overview',this);return false;"><i class="fas fa-th-large" aria-hidden="true"></i> Overview</a></li>
+            <li><a href="#" onclick="showPanel('submit',this);return false;"><i class="fas fa-upload" aria-hidden="true"></i> Submit Content</a></li>
+            <li><a href="#" onclick="showPanel('myarticles',this);return false;"><i class="fas fa-newspaper" aria-hidden="true"></i> My Articles</a></li>
+            <li><a href="#" onclick="showPanel('mytutorials',this);return false;"><i class="fas fa-tools" aria-hidden="true"></i> My Tutorials</a></li>
+            <li style="margin-top:16px;border-top:1px solid var(--grey-light);padding-top:12px;">
+              <a href="#" onclick="IoTopia.logout();return false;" style="color:rgba(239,68,68,0.85)!important;">
+                <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Log Out
+              </a>
+            </li>
+          </ul>
+        </aside>
+
+        <!-- Main content panels -->
+        <div class="dash-content">
+
+          <!-- ── Overview panel ── -->
+          <div class="dash-panel active" id="panel-overview">
+            <div class="dash-card">
+              <h2>Your Content</h2>
+              <p class="dash-card-sub">A quick view of everything you have published on IoTopia.</p>
+              <div id="overviewList">
+                <div class="empty-state">
+                  <i class="fas fa-inbox" aria-hidden="true"></i>
+                  <p>You have not published any content yet.</p>
+                  <a href="#" class="btn btn-primary" onclick="showPanel('submit',null);return false;">
+                    Submit Your First Article or Tutorial
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Submit content panel ── -->
+          <div class="dash-panel" id="panel-submit">
+            <div class="dash-card">
+              <h2>Submit Content</h2>
+              <p class="dash-card-sub">Choose to submit an article (written content) or a tutorial (step-by-step guide).</p>
+
+              <!-- Tab switcher -->
+              <div class="upload-tabs">
+                <button class="upload-tab active" onclick="switchUploadTab('article',this)">
+                  <i class="fas fa-newspaper" aria-hidden="true"></i> Article
+                </button>
+                <button class="upload-tab" onclick="switchUploadTab('tutorial',this)">
+                  <i class="fas fa-tools" aria-hidden="true"></i> Tutorial
+                </button>
+              </div>
+
+              <!-- Article form -->
+              <div class="upload-form-panel active" id="upload-article">
+                <div class="auth-alert" id="articleAlert" role="alert"></div>
+                <form id="articleForm" novalidate>
+                  <div class="form-group">
+                    <label for="artTitle">Article Title *</label>
+                    <input type="text" id="artTitle" placeholder="e.g. How 5G is Transforming Industrial IoT" aria-required="true"/>
+                    <span class="form-error" id="artTitleErr" role="alert"></span>
+                  </div>
+                  <div class="form-group">
+                    <label for="artCategory">Category *</label>
+                    <select id="artCategory" aria-required="true">
+                      <option value="">Select a category</option>
+                      <option value="Smart Home">Smart Home</option>
+                      <option value="Healthcare">Healthcare</option>
+                      <option value="Industry">Industry</option>
+                      <option value="Agriculture">Agriculture</option>
+                      <option value="Security">Security</option>
+                      <option value="Connectivity">Connectivity</option>
+                      <option value="General IoT">General IoT</option>
+                    </select>
+                    <span class="form-error" id="artCatErr" role="alert"></span>
+                  </div>
+                  <div class="form-group">
+                    <label for="artSummary">Summary * <span class="char-count" id="summaryCount">0 / 200</span></label>
+                    <textarea id="artSummary" placeholder="A short summary of your article (max 200 characters)…"
+                              maxlength="200" aria-required="true" style="min-height:80px;"></textarea>
+                    <span class="form-error" id="artSumErr" role="alert"></span>
+                  </div>
+                  <div class="form-group">
+                    <label for="artContent">Article Body *</label>
+                    <textarea id="artContent" placeholder="Write your full article here (minimum 100 characters)…"
+                              style="min-height:200px;" aria-required="true"></textarea>
+                    <span class="form-error" id="artContentErr" role="alert"></span>
+                  </div>
+                  <button type="submit" class="btn btn-primary" style="margin-top:8px;">
+                    Publish Article <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                  </button>
+                </form>
+              </div>
+
+              <!-- Tutorial form -->
+              <div class="upload-form-panel" id="upload-tutorial">
+                <div class="auth-alert" id="tutorialAlert" role="alert"></div>
+                <form id="tutorialForm" novalidate>
+                  <div class="form-group">
+                    <label for="tutTitle">Tutorial Title *</label>
+                    <input type="text" id="tutTitle" placeholder="e.g. Build a Smart Temperature Sensor with Arduino" aria-required="true"/>
+                    <span class="form-error" id="tutTitleErr" role="alert"></span>
+                  </div>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                    <div class="form-group">
+                      <label for="tutDifficulty">Difficulty Level *</label>
+                      <select id="tutDifficulty" aria-required="true">
+                        <option value="">Select level</option>
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                      </select>
+                      <span class="form-error" id="tutDiffErr" role="alert"></span>
+                    </div>
+                    <div class="form-group">
+                      <label for="tutDuration">Estimated Time *</label>
+                      <input type="text" id="tutDuration" placeholder="e.g. 45 minutes" aria-required="true"/>
+                      <span class="form-error" id="tutDurErr" role="alert"></span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="tutHardware">Hardware / Requirements *</label>
+                    <input type="text" id="tutHardware" placeholder="e.g. Arduino Uno, DHT22 sensor, breadboard, jumper wires" aria-required="true"/>
+                    <span class="form-error" id="tutHwErr" role="alert"></span>
+                  </div>
+                  <div class="form-group">
+                    <label for="tutIntro">Introduction *</label>
+                    <textarea id="tutIntro" placeholder="Describe what this tutorial will teach and what the user will build…" aria-required="true"></textarea>
+                    <span class="form-error" id="tutIntroErr" role="alert"></span>
+                  </div>
+
+                  <!-- Step builder -->
+                  <div class="form-group">
+                    <label>Tutorial Steps * <small style="color:var(--grey-mid);font-weight:400;">(add at least 2 steps)</small></label>
+                    <div class="step-builder" id="stepBuilder">
+                      <!-- Steps inserted by JS -->
+                    </div>
+                    <button type="button" class="add-step-btn" id="addStepBtn" onclick="addStep()">
+                      <i class="fas fa-plus" aria-hidden="true"></i> Add Step
+                    </button>
+                    <span class="form-error" id="tutStepsErr" role="alert"></span>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary" style="margin-top:8px;">
+                    Publish Tutorial <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── My Articles panel ── -->
+          <div class="dash-panel" id="panel-myarticles">
+            <div class="dash-card">
+              <h2>My Articles</h2>
+              <p class="dash-card-sub">All articles you have published on IoTopia.</p>
+              <div id="myArticlesList"></div>
+            </div>
+          </div>
+
+          <!-- ── My Tutorials panel ── -->
+          <div class="dash-panel" id="panel-mytutorials">
+            <div class="dash-card">
+              <h2>My Tutorials</h2>
+              <p class="dash-card-sub">All tutorials you have published on IoTopia.</p>
+              <div id="myTutorialsList"></div>
+            </div>
+          </div>
+
+        </div><!-- end dash-content -->
+      </div><!-- end dashboard-layout -->
+    </div>
+  </main>
+
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // ── Guard: redirect if not logged in ──
+    var session = IoTopia.getSession();
+    if (!session) window.location.href = 'login.html';
+
+    // ── Populate user info ──
+    document.getElementById('dashWelcome').textContent   = 'Welcome back, ' + session.name.split(' ')[0] + '!';
+    document.getElementById('sidebarAvatar').textContent = session.avatar;
+    document.getElementById('sidebarName').textContent   = session.name;
+    document.getElementById('sidebarEmail').textContent  = session.email;
+    document.getElementById('statJoined').textContent    = session.joined;
+
+    // ── Update stats ──
+    function refreshStats() {
+      var myArticles  = IoTopia.getArticles().filter(function(a){ return a.authorId === session.id; });
+      var myTutorials = IoTopia.getTutorials().filter(function(t){ return t.authorId === session.id; });
+      document.getElementById('statArticles').textContent  = myArticles.length;
+      document.getElementById('statTutorials').textContent = myTutorials.length;
+    }
+    refreshStats();
+
+    // ── Panel switcher ──
+    function showPanel(id, link) {
+      document.querySelectorAll('.dash-panel').forEach(function(p){ p.classList.remove('active'); });
+      document.querySelectorAll('.dash-nav a').forEach(function(a){ a.classList.remove('active'); });
+      document.getElementById('panel-' + id).classList.add('active');
+      if (link) link.classList.add('active');
+      if (id === 'myarticles')  renderMyArticles();
+      if (id === 'mytutorials') renderMyTutorials();
+      if (id === 'overview')    renderOverview();
+    }
+
+    // ── Upload tab switcher ──
+    function switchUploadTab(id, btn) {
+      document.querySelectorAll('.upload-form-panel').forEach(function(p){ p.classList.remove('active'); });
+      document.querySelectorAll('.upload-tab').forEach(function(b){ b.classList.remove('active'); });
+      document.getElementById('upload-' + id).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    // ── Step builder ──
+    var stepCount = 0;
+    function addStep() {
+      stepCount++;
+      var builder = document.getElementById('stepBuilder');
+      var div = document.createElement('div');
+      div.className = 'step-item step-fields';
+      div.setAttribute('data-step', stepCount);
+      div.innerHTML =
+        '<span class="step-num-badge">Step ' + stepCount + '</span>' +
+        '<button type="button" class="remove-step" onclick="removeStep(this)" aria-label="Remove step"><i class="fas fa-times"></i></button>' +
+        '<div class="form-group" style="margin-bottom:10px;">' +
+          '<label>Step Title *</label>' +
+          '<input type="text" class="step-title" placeholder="e.g. Wire up the sensor" />' +
+        '</div>' +
+        '<div class="form-group" style="margin-bottom:0;">' +
+          '<label>Step Instructions *</label>' +
+          '<textarea class="step-content" placeholder="Describe what to do in this step…"></textarea>' +
+        '</div>';
+      builder.appendChild(div);
+    }
+    function removeStep(btn) {
+      btn.closest('.step-item').remove();
+      // Renumber
+      document.querySelectorAll('.step-item').forEach(function(el, i){
+        el.querySelector('.step-num-badge').textContent = 'Step ' + (i + 1);
+      });
+    }
+    // Add 2 default steps on load
+    addStep(); addStep();
+
+    // ── Character counter for summary ──
+    document.getElementById('artSummary').addEventListener('input', function(){
+      document.getElementById('summaryCount').textContent = this.value.length + ' / 200';
+    });
+
+    // ── Article form submission ──
+    document.getElementById('articleForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      var alertEl = document.getElementById('articleAlert');
+      alertEl.className = 'auth-alert';
+
+      var title    = document.getElementById('artTitle').value;
+      var category = document.getElementById('artCategory').value;
+      var summary  = document.getElementById('artSummary').value;
+      var content  = document.getElementById('artContent').value;
+      var valid = true;
+
+      function showErr(inputId, errId, msg){
+        var inp = document.getElementById(inputId);
+        if(inp){ inp.classList.add('input-error'); }
+        var el = document.getElementById(errId);
+        el.textContent = msg; el.classList.add('show');
+        valid = false;
+      }
+      function clearErrs(){
+        ['artTitle','artCategory','artSummary','artContent'].forEach(function(id){
+          var el = document.getElementById(id);
+          if(el) el.classList.remove('input-error');
+        });
+        ['artTitleErr','artCatErr','artSumErr','artContentErr'].forEach(function(id){
+          document.getElementById(id).classList.remove('show');
+        });
+      }
+      clearErrs();
+
+      if (title.trim().length < 5)    showErr('artTitle',   'artTitleErr',   'Please enter a title (at least 5 characters).');
+      if (!category)                  showErr('artCategory','artCatErr',     'Please select a category.');
+      if (summary.trim().length < 20) showErr('artSummary', 'artSumErr',     'Please enter a summary (at least 20 characters).');
+      if (content.trim().length < 100)showErr('artContent', 'artContentErr', 'Please write your article (at least 100 characters).');
+
+      if (!valid) return;
+
+      var result = IoTopia.submitArticle(title, category, summary, content);
+      if (result.ok) {
+        alertEl.className = 'auth-alert success';
+        alertEl.textContent = '✓ Article published successfully! It is now live on the News page.';
+        document.getElementById('articleForm').reset();
+        document.getElementById('summaryCount').textContent = '0 / 200';
+        refreshStats();
+      } else {
+        alertEl.className = 'auth-alert error';
+        alertEl.textContent = result.msg;
+      }
+    });
+
+    // ── Tutorial form submission ──
+    document.getElementById('tutorialForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      var alertEl = document.getElementById('tutorialAlert');
+      alertEl.className = 'auth-alert';
+
+      var title      = document.getElementById('tutTitle').value;
+      var difficulty = document.getElementById('tutDifficulty').value;
+      var duration   = document.getElementById('tutDuration').value;
+      var hardware   = document.getElementById('tutHardware').value;
+      var intro      = document.getElementById('tutIntro').value;
+      var valid = true;
+
+      // Collect steps
+      var steps = [];
+      document.querySelectorAll('#stepBuilder .step-item').forEach(function(el){
+        var t = el.querySelector('.step-title').value.trim();
+        var c = el.querySelector('.step-content').value.trim();
+        steps.push({ title: t, content: c });
+      });
+
+      function showErr(inputId, errId, msg){
+        var inp = document.getElementById(inputId);
+        if(inp){ inp.classList.add('input-error'); }
+        var el = document.getElementById(errId);
+        el.textContent = msg; el.classList.add('show');
+        valid = false;
+      }
+      function clearErrs(){
+        ['tutTitle','tutDifficulty','tutDuration','tutHardware','tutIntro'].forEach(function(id){
+          var el = document.getElementById(id);
+          if(el) el.classList.remove('input-error');
+        });
+        ['tutTitleErr','tutDiffErr','tutDurErr','tutHwErr','tutIntroErr','tutStepsErr'].forEach(function(id){
+          document.getElementById(id).classList.remove('show');
+        });
+      }
+      clearErrs();
+
+      if (title.trim().length < 5)    showErr('tutTitle',      'tutTitleErr',  'Please enter a title (at least 5 characters).');
+      if (!difficulty)                showErr('tutDifficulty',  'tutDiffErr',   'Please select a difficulty level.');
+      if (!duration.trim())           showErr('tutDuration',    'tutDurErr',    'Please enter an estimated time.');
+      if (!hardware.trim())           showErr('tutHardware',    'tutHwErr',     'Please list the required hardware.');
+      if (intro.trim().length < 30)   showErr('tutIntro',       'tutIntroErr',  'Please write an introduction (at least 30 characters).');
+      if (steps.length < 2 || steps.some(function(s){ return !s.title || !s.content; })){
+        var el = document.getElementById('tutStepsErr');
+        el.textContent = 'Please add at least 2 complete steps (each needs a title and instructions).';
+        el.classList.add('show');
+        valid = false;
+      }
+
+      if (!valid) return;
+
+      var result = IoTopia.submitTutorial(title, difficulty, duration, hardware, intro, steps);
+      if (result.ok) {
+        alertEl.className = 'auth-alert success';
+        alertEl.textContent = '✓ Tutorial published successfully! It is now live on the Tutorials page.';
+        document.getElementById('tutorialForm').reset();
+        // Reset step builder
+        document.getElementById('stepBuilder').innerHTML = '';
+        stepCount = 0;
+        addStep(); addStep();
+        refreshStats();
+      } else {
+        alertEl.className = 'auth-alert error';
+        alertEl.textContent = result.msg;
+      }
+    });
+
+    // ── Render overview ──
+    function renderOverview() {
+      var myArticles  = IoTopia.getArticles().filter(function(a){ return a.authorId === session.id; });
+      var myTutorials = IoTopia.getTutorials().filter(function(t){ return t.authorId === session.id; });
+      var container   = document.getElementById('overviewList');
+
+      if (!myArticles.length && !myTutorials.length) {
+        container.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>You have not published any content yet.</p>' +
+          '<a href="#" class="btn btn-primary" onclick="showPanel(\'submit\',null);return false;">Submit Your First Content</a></div>';
+        return;
+      }
+
+      var html = '';
+      myArticles.concat(myTutorials).sort(function(a,b){ return b.id - a.id; }).forEach(function(item){
+        var type  = item.steps ? 'Tutorial' : 'Article';
+        var icon  = item.steps ? 'fa-tools' : 'fa-newspaper';
+        var badge = item.steps ? (item.difficulty || 'Tutorial') : (item.category || 'Article');
+        html += '<div class="my-content-card">' +
+          '<i class="fas ' + icon + '" style="color:var(--primary);font-size:1.2rem;margin-top:2px;"></i>' +
+          '<div style="flex:1;">' +
+            '<h4>' + item.title + '</h4>' +
+            '<p class="mcc-meta">' + type + ' · ' + badge + ' · ' + item.date + '</p>' +
+          '</div>' +
+          '<div class="mcc-actions">' +
+            '<button class="mcc-del" onclick="' + (item.steps ? 'delTut' : 'delArt') + '(' + item.id + ')">Delete</button>' +
+          '</div></div>';
+      });
+      container.innerHTML = html;
+    }
+
+    // ── Render my articles ──
+    function renderMyArticles() {
+      var list = IoTopia.getArticles().filter(function(a){ return a.authorId === session.id; });
+      var container = document.getElementById('myArticlesList');
+      if (!list.length) {
+        container.innerHTML = '<div class="empty-state"><i class="fas fa-newspaper"></i><p>No articles yet.</p>' +
+          '<a href="#" class="btn btn-ghost" onclick="showPanel(\'submit\',null);switchUploadTab(\'article\',document.querySelector(\'.upload-tab\'));return false;">Write an Article</a></div>';
+        return;
+      }
+      container.innerHTML = list.map(function(a){
+        return '<div class="my-content-card">' +
+          '<i class="fas fa-newspaper" style="color:var(--primary);font-size:1.2rem;margin-top:2px;"></i>' +
+          '<div style="flex:1;">' +
+            '<h4>' + a.title + '</h4>' +
+            '<p class="mcc-meta">' + a.category + ' · ' + a.date + '</p>' +
+            '<p style="font-size:0.88rem;color:var(--text-muted);margin-top:4px;">' + a.summary + '</p>' +
+          '</div>' +
+          '<div class="mcc-actions"><button class="mcc-del" onclick="delArt(' + a.id + ')">Delete</button></div>' +
+        '</div>';
+      }).join('');
+    }
+
+    // ── Render my tutorials ──
+    function renderMyTutorials() {
+      var list = IoTopia.getTutorials().filter(function(t){ return t.authorId === session.id; });
+      var container = document.getElementById('myTutorialsList');
+      if (!list.length) {
+        container.innerHTML = '<div class="empty-state"><i class="fas fa-tools"></i><p>No tutorials yet.</p>' +
+          '<a href="#" class="btn btn-ghost" onclick="showPanel(\'submit\',null);return false;">Write a Tutorial</a></div>';
+        return;
+      }
+      container.innerHTML = list.map(function(t){
+        return '<div class="my-content-card">' +
+          '<i class="fas fa-tools" style="color:var(--primary);font-size:1.2rem;margin-top:2px;"></i>' +
+          '<div style="flex:1;">' +
+            '<h4>' + t.title + '</h4>' +
+            '<p class="mcc-meta">' + t.difficulty + ' · ' + t.duration + ' · ' + t.steps.length + ' steps · ' + t.date + '</p>' +
+            '<p style="font-size:0.88rem;color:var(--text-muted);margin-top:4px;">' + t.intro.substring(0, 120) + (t.intro.length > 120 ? '…' : '') + '</p>' +
+          '</div>' +
+          '<div class="mcc-actions"><button class="mcc-del" onclick="delTut(' + t.id + ')">Delete</button></div>' +
+        '</div>';
+      }).join('');
+    }
+
+    function delArt(id) {
+      if (!confirm('Delete this article? This cannot be undone.')) return;
+      IoTopia.deleteArticle(id);
+      refreshStats();
+      renderMyArticles();
+      renderOverview();
+    }
+    function delTut(id) {
+      if (!confirm('Delete this tutorial? This cannot be undone.')) return;
+      IoTopia.deleteTutorial(id);
+      refreshStats();
+      renderMyTutorials();
+      renderOverview();
+    }
+
+    // Init overview on load
+    renderOverview();
+  </script>
+</body>
+</html>

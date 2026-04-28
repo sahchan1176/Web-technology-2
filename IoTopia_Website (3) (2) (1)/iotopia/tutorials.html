@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="IoTopia – Beginner IoT tutorials. Step-by-step guides for Arduino, ESP32 and Raspberry Pi projects."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <!-- Internal CSS -->
+  <style>
+    .tut-layout { display:grid; grid-template-columns:260px 1fr; gap:36px; align-items:start; }
+    /* Sidebar nav */
+    .tut-sidebar { background:var(--white); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px; position:sticky; top:calc(var(--nav-height)+20px); }
+    .tut-sidebar h4 { font-size:0.76rem; text-transform:uppercase; letter-spacing:0.11em; color:var(--primary); margin-bottom:14px; }
+    .tut-nav-list li { margin-bottom:3px; }
+    .tut-nav-list a { display:block; padding:9px 13px; border-radius:8px; font-size:0.88rem; color:var(--text-muted); transition:all var(--transition); }
+    .tut-nav-list a:hover,.tut-nav-list a.active { background:var(--accent); color:var(--primary-dark); font-weight:600; }
+    /* Tutorial panels */
+    .tut-content { background:var(--white); border-radius:var(--radius); box-shadow:var(--shadow); }
+    .tut-panel { display:none; padding:36px; }
+    .tut-panel.active { display:block; }
+    .tut-meta { display:flex; gap:18px; align-items:center; flex-wrap:wrap; margin-bottom:24px; padding-bottom:18px; border-bottom:1px solid var(--grey-light); }
+    .tut-badge { padding:5px 13px; border-radius:100px; font-size:0.76rem; font-weight:700; font-family:var(--font-heading); }
+    .tb-beginner     { background:#E8F5E9; color:#2E7D32; }
+    .tb-intermediate { background:#FFF8E1; color:#E65100; }
+    /* Numbered steps */
+    .step-list { counter-reset:steps; list-style:none; padding:0; }
+    .step-list li { counter-increment:steps; position:relative; padding-left:52px; margin-bottom:26px; }
+    .step-list li::before {
+      content:counter(steps); position:absolute; left:0; top:0;
+      width:34px; height:34px; background:var(--primary); color:var(--white);
+      border-radius:50%; display:flex; align-items:center; justify-content:center;
+      font-family:var(--font-heading); font-weight:700; font-size:0.92rem;
+    }
+    .step-list h4 { margin-bottom:5px; }
+    /* Code blocks */
+    .code-block { background:var(--secondary); border-radius:var(--radius); padding:18px 22px; margin:14px 0; overflow-x:auto; }
+    .code-block code { color:#00D4C8; font-family:'Courier New',Courier,monospace; font-size:0.84rem; line-height:1.7; white-space:pre; }
+    /* Tip box */
+    .tut-tip { background:var(--accent); border-left:4px solid var(--primary); border-radius:0 var(--radius) var(--radius) 0; padding:14px 18px; margin:18px 0; }
+    .tut-tip strong { color:var(--primary-dark); }
+    /* Parts list box */
+    .parts-box { background:var(--bg); border-radius:var(--radius); padding:18px 22px; margin-bottom:22px; }
+    .parts-box h4 { margin-bottom:10px; }
+    @media(max-width:768px){ .tut-layout{grid-template-columns:1fr;} .tut-sidebar{position:static;} }
+  </style>
+  <title>IoTopia – Tutorials</title>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-logo">IoT<span>opia</span></a>
+      <ul class="nav-links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="applications.html">Applications</a></li>
+        <li><a href="devices.html">Devices</a></li>
+        <li><a href="tutorials.html" class="active">Tutorials</a></li>
+        <li><a href="news.html">News</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="btn btn-primary nav-cta">Contact Us</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+  <header class="page-header">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><span aria-current="page">Tutorials</span></nav>
+      <h1>Getting Started with IoT</h1>
+      <p>Four beginner-friendly, step-by-step guides to build your first IoT projects from scratch.</p>
+    </div>
+  </header>
+  <main id="main-content">
+    <section class="section" style="background:var(--bg);">
+      <div class="container">
+        <div class="tut-layout">
+          <!-- JS sidebar navigation (content plan) -->
+          <aside class="tut-sidebar" aria-label="Tutorial navigation">
+            <h4>Tutorials</h4>
+            <ul class="tut-nav-list" role="list">
+              <li><a href="#" class="active" onclick="showTutorial('t1',this);return false;">🌡️ Temp Monitor – Arduino</a></li>
+              <li><a href="#" onclick="showTutorial('t2',this);return false;">💡 Blink LED – Hello World</a></li>
+              <li><a href="#" onclick="showTutorial('t3',this);return false;">📶 ESP32 Wi-Fi Logger</a></li>
+              <li><a href="#" onclick="showTutorial('t4',this);return false;">🏠 Smart Light – Raspberry Pi</a></li>
+            </ul>
+          </aside>
+
+          <!-- Tutorial content panels (JS switcher as per content plan) -->
+          <div class="tut-content">
+
+            <!-- Tutorial 1 -->
+            <article class="tut-panel active" id="tut-t1">
+              <h2>Temperature Monitor with Arduino</h2>
+              <div class="tut-meta">
+                <span class="tut-badge tb-beginner">Beginner</span>
+                <span><i class="fas fa-clock" aria-hidden="true"></i> 45 minutes</span>
+                <span><i class="fas fa-microchip" aria-hidden="true"></i> Arduino Uno + DHT22</span>
+              </div>
+              <p>Build a temperature and humidity monitor using an Arduino Uno and a DHT22 sensor. Readings are displayed in the Arduino Serial Monitor every 2 seconds.</p>
+              <!-- Nested parts list (content plan) -->
+              <div class="parts-box">
+                <h4>📦 What You Will Need</h4>
+                <ul class="nested-list" aria-label="Parts required">
+                  <li>Arduino Uno R3 or R4
+                    <ul class="sub-list nested-list">
+                      <li>USB cable (Type A to Type B)</li>
+                      <li>Arduino IDE installed on your computer</li>
+                    </ul>
+                  </li>
+                  <li>DHT22 Temperature and Humidity Sensor</li>
+                  <li>Breadboard and jumper wires</li>
+                  <li>10kΩ resistor (pull-up)</li>
+                </ul>
+              </div>
+              <ol class="step-list" aria-label="Tutorial steps">
+                <li><h4>Wire the DHT22 Sensor</h4><p>Connect DHT22 VCC to Arduino 5V, GND to GND and DATA to digital pin 2. Place a 10kΩ pull-up resistor between VCC and DATA.</p></li>
+                <li><h4>Install the DHT Library</h4><p>In Arduino IDE go to Sketch → Include Library → Manage Libraries. Search for "DHT sensor library" by Adafruit and install it along with the Adafruit Unified Sensor dependency.</p></li>
+                <li><h4>Upload the Code</h4>
+                  <div class="code-block"><code>/* IoTopia – Temperature Monitor Tutorial */
+#include &lt;DHT.h&gt;
+
+#define DHTPIN  2       // Data connected to pin 2
+#define DHTTYPE DHT22   // Sensor model
+
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup() {
+  Serial.begin(9600);
+  dht.begin();
+  Serial.println("IoTopia Temp Monitor Ready!");
+}
+
+void loop() {
+  float humidity    = dht.readHumidity();
+  float temperature = dht.readTemperature();
+
+  if (isnan(humidity) || isnan(temperature)) {
+    Serial.println("Error: sensor read failed!");
+    return;
+  }
+
+  Serial.print("Temp: ");
+  Serial.print(temperature);
+  Serial.print(" C  |  Humidity: ");
+  Serial.print(humidity);
+  Serial.println(" %");
+
+  delay(2000); // Read every 2 seconds
+}</code></div>
+                </li>
+                <li><h4>Open Serial Monitor</h4><p>Press Ctrl+Shift+M in Arduino IDE. Set baud rate to 9600. You should see temperature and humidity readings every 2 seconds.</p></li>
+              </ol>
+              <div class="tut-tip"><strong>💡 Pro Tip:</strong> The DHT22 is more accurate than the cheaper DHT11. Always wait at least 2 seconds between readings — the sensor needs time to stabilise.</div>
+            </article>
+
+            <!-- Tutorial 2 -->
+            <article class="tut-panel" id="tut-t2">
+              <h2>Blink an LED – Hello World of Electronics</h2>
+              <div class="tut-meta">
+                <span class="tut-badge tb-beginner">Beginner</span>
+                <span><i class="fas fa-clock" aria-hidden="true"></i> 15 minutes</span>
+                <span><i class="fas fa-microchip" aria-hidden="true"></i> Arduino + LED</span>
+              </div>
+              <p>Blinking an LED is the "Hello World" of electronics. This is the simplest possible Arduino project and teaches you the basics of digital output control.</p>
+              <ol class="step-list">
+                <li><h4>Connect the LED</h4><p>Place an LED on the breadboard. Connect the longer leg (anode) through a 220Ω resistor to Arduino pin 13. Connect the shorter leg (cathode) to GND.</p></li>
+                <li><h4>Upload the Sketch</h4>
+                  <div class="code-block"><code>/* IoTopia – Blink LED Tutorial
+   Pin 13 has a built-in LED on most Arduino boards */
+
+int ledPin = 13;  // LED connected to digital pin 13
+
+void setup() {
+  pinMode(ledPin, OUTPUT); // Set pin 13 as output
+}
+
+void loop() {
+  digitalWrite(ledPin, HIGH); // Turn LED ON
+  delay(1000);                // Wait 1 second
+  digitalWrite(ledPin, LOW);  // Turn LED OFF
+  delay(1000);                // Wait 1 second
+}</code></div>
+                </li>
+                <li><h4>Experiment with the Delay</h4><p>Change the delay values to make the LED blink faster (200ms) or slower (2000ms). This shows how software directly controls physical hardware.</p></li>
+              </ol>
+              <div class="tut-tip"><strong>💡 Next Step:</strong> Once mastered, try fading the LED with <code>analogWrite()</code> — this introduces Pulse Width Modulation (PWM), a key IoT technique.</div>
+            </article>
+
+            <!-- Tutorial 3 -->
+            <article class="tut-panel" id="tut-t3">
+              <h2>ESP32 Wi-Fi Sensor Data Logger</h2>
+              <div class="tut-meta">
+                <span class="tut-badge tb-intermediate">Intermediate</span>
+                <span><i class="fas fa-clock" aria-hidden="true"></i> 90 minutes</span>
+                <span><i class="fas fa-microchip" aria-hidden="true"></i> ESP32 + DHT22</span>
+              </div>
+              <p>Use the ESP32's built-in Wi-Fi to connect your sensor project to the internet. This is the foundation of a real IoT system — a device that sends data over a network.</p>
+              <ol class="step-list">
+                <li><h4>Set Up ESP32 in Arduino IDE</h4><p>Go to File → Preferences and add the ESP32 board manager URL. Then install the "esp32 by Espressif Systems" package via Tools → Boards Manager.</p></li>
+                <li><h4>Connect the Hardware</h4><p>Wire the DHT22 as before: VCC to 3.3V, GND to GND and DATA to GPIO pin 4 on the ESP32.</p></li>
+                <li><h4>Upload the Wi-Fi Sketch</h4>
+                  <div class="code-block"><code>/* IoTopia – ESP32 Wi-Fi Data Logger */
+#include &lt;WiFi.h&gt;
+#include &lt;DHT.h&gt;
+
+const char* ssid     = "YOUR_WIFI_NAME";
+const char* password = "YOUR_WIFI_PASSWORD";
+
+#define DHTPIN  4
+#define DHTTYPE DHT22
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup() {
+  Serial.begin(115200);
+  dht.begin();
+  WiFi.begin(ssid, password);
+
+  Serial.print("Connecting to Wi-Fi");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("\nConnected! IP: " + WiFi.localIP().toString());
+}
+
+void loop() {
+  float temp = dht.readTemperature();
+  float hum  = dht.readHumidity();
+  Serial.printf("Temp: %.1f C  |  Humidity: %.1f %%\n", temp, hum);
+  delay(5000); // Send every 5 seconds
+}</code></div>
+                </li>
+                <li><h4>View Live Data</h4><p>Open Serial Monitor at 115200 baud. Once connected you will see your device's IP address and live sensor readings every 5 seconds.</p></li>
+              </ol>
+            </article>
+
+            <!-- Tutorial 4 -->
+            <article class="tut-panel" id="tut-t4">
+              <h2>Smart Light with Raspberry Pi</h2>
+              <div class="tut-meta">
+                <span class="tut-badge tb-intermediate">Intermediate</span>
+                <span><i class="fas fa-clock" aria-hidden="true"></i> 60 minutes</span>
+                <span><i class="fas fa-microchip" aria-hidden="true"></i> Raspberry Pi + PIR Sensor</span>
+              </div>
+              <p>Build a motion-activated smart light using a Raspberry Pi and a PIR sensor. The LED turns on automatically when someone enters the room — a real smart home feature.</p>
+              <ol class="step-list">
+                <li><h4>Connect the PIR Sensor</h4><p>Connect PIR VCC to Pi pin 2 (5V), GND to pin 6 (GND) and the OUT signal to GPIO 17 (pin 11). Connect an LED (with 330Ω resistor) to GPIO 27.</p></li>
+                <li><h4>Install the GPIO Library</h4>
+                  <div class="code-block"><code>pip install RPi.GPIO</code></div>
+                </li>
+                <li><h4>Write and Run the Script</h4>
+                  <div class="code-block"><code># IoTopia – Smart Light with PIR Sensor
+import RPi.GPIO as GPIO
+import time
+
+PIR_PIN = 17   # PIR sensor signal pin
+LED_PIN = 27   # LED output pin
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(PIR_PIN, GPIO.IN)
+GPIO.setup(LED_PIN, GPIO.OUT)
+
+print("IoTopia Smart Light – Waiting for motion...")
+
+try:
+    while True:
+        if GPIO.input(PIR_PIN):          # Motion detected
+            GPIO.output(LED_PIN, GPIO.HIGH)
+            print("Motion detected! Light ON")
+            time.sleep(10)               # Stay on 10 seconds
+        else:
+            GPIO.output(LED_PIN, GPIO.LOW)
+        time.sleep(0.1)
+
+except KeyboardInterrupt:
+    GPIO.cleanup()
+    print("Program stopped cleanly.")</code></div>
+                </li>
+                <li><h4>Test the System</h4><p>Run <code>python3 smart_light.py</code> from your terminal. Wave your hand in front of the PIR sensor — the LED will turn on for 10 seconds, then turn off automatically.</p></li>
+              </ol>
+              <div class="tut-tip"><strong>💡 Going Further:</strong> You can extend this project to send a notification to your phone using the Pushover API whenever motion is detected at home.</div>
+            </article>
+
+          </div><!-- end tut-content -->
+        </div>
+      </div>
+    </section>
+  </main>
+    <!-- Community tutorials section -->
+  <section class="section-sm" style="background:var(--white);" id="communityTutorialsSection" aria-labelledby="community-tut-heading" style="display:none;">
+    <div class="container">
+      <h2 id="community-tut-heading" style="margin-bottom:8px;">
+        <i class="fas fa-users" style="color:var(--primary);margin-right:10px;font-size:1.4rem;"></i>
+        Community Tutorials
+      </h2>
+      <p style="color:var(--text-muted);margin-bottom:28px;">Step-by-step tutorials submitted by the IoTopia community.</p>
+      <div id="communityTutorialsGrid" class="grid-3"></div>
+    </div>
+  </section>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="index.html" class="nav-logo">IoT<span>opia</span></a><p>Your go-to resource for understanding the Internet of Things.</p></div>
+        <div class="footer-col"><h4>Learn</h4><ul><li><a href="applications.html">What is IoT?</a></li><li><a href="applications.html">Applications</a></li><li><a href="devices.html">Devices</a></li><li><a href="tutorials.html">Tutorials</a></li></ul></div>
+        <div class="footer-col"><h4>Explore</h4><ul><li><a href="news.html">Latest News</a></li><li><a href="contact.html">FAQ</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+        <div class="footer-col"><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Cookie Policy</a></li><li><a href="#">Terms of Use</a></li><li><a href="#">Accessibility</a></li></ul></div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2025 IoTopia. Educational use only.</p><p>HTML5 &bull; CSS3 &bull; JavaScript</p></div>
+    </div>
+  </footer>
+  <button id="scrollTop" aria-label="Scroll back to top"><i class="fas fa-chevron-up"></i></button>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var tuts    = IoTopia.getTutorials();
+      var section = document.getElementById('communityTutorialsSection');
+      var grid    = document.getElementById('communityTutorialsGrid');
+      if (!section || !tuts.length) return;
+
+      section.style.display = 'block';
+      var diffColours = { Beginner:'#E8F5E9|#2E7D32', Intermediate:'#FFF8E1|#E65100', Advanced:'#FCE4EC|#C62828' };
+
+      grid.innerHTML = tuts.map(function(t) {
+        var dc = (diffColours[t.difficulty] || '#E0F2F2|#006666').split('|');
+        return '<article class="card" style="overflow:hidden;">' +
+          '<div style="background:linear-gradient(135deg,var(--secondary),var(--secondary-lt));' +
+            'height:80px;display:flex;align-items:center;justify-content:center;font-size:2.2rem;">🔧</div>' +
+          '<div class="card-body">' +
+            '<div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">' +
+              '<span style="background:' + dc[0] + ';color:' + dc[1] + ';font-family:var(--font-heading);font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:100px;">' + (t.difficulty||'Beginner') + '</span>' +
+              '<span style="background:var(--accent);color:var(--primary-dark);font-family:var(--font-heading);font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:100px;">' + t.duration + '</span>' +
+            '</div>' +
+            '<h3 style="font-size:1rem;margin-bottom:6px;">' + t.title + '</h3>' +
+            '<p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:8px;">' + t.intro.substring(0,100) + (t.intro.length>100?'…':'') + '</p>' +
+            '<p style="font-size:0.78rem;color:var(--grey-mid);">by ' + t.authorName + ' · ' + t.steps.length + ' steps</p>' +
+          '</div></article>';
+      }).join('');
+    });
+  </script>
+</body>
+</html>

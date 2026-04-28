@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="IoTopia – Contact Us. Send us a message, find our location and get in touch with the IoTopia team."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <!-- Internal CSS -->
+  <style>
+    .contact-layout { display:grid; grid-template-columns:1fr 1.55fr; gap:52px; align-items:start; }
+    /* Contact info cards (content plan: email, location, hours, GDPR) */
+    .info-cards { display:flex; flex-direction:column; gap:16px; }
+    .info-card { background:var(--white); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px; display:flex; gap:14px; align-items:flex-start; }
+    .ic-icon { width:42px; height:42px; background:var(--accent); border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:1.25rem; flex-shrink:0; }
+    .ic-text h4 { margin-bottom:3px; }
+    .ic-text p  { font-size:0.88rem; margin:0; }
+    /* Map placeholder (content plan) */
+    .map-block {
+      background:linear-gradient(135deg,var(--secondary),var(--secondary-lt));
+      border-radius:var(--radius); height:220px; margin-top:16px;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      color:var(--white); text-align:center; gap:10px;
+    }
+    .map-block span { font-size:2.2rem; }
+    .map-block p { color:rgba(255,255,255,0.65); font-size:0.88rem; margin:0; }
+    /* Form card */
+    .form-card { background:var(--white); border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); padding:38px; }
+    .form-card h3 { margin-bottom:6px; }
+    .form-card > p { margin-bottom:26px; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    /* GDPR checkbox row */
+    .gdpr-row { display:flex; align-items:flex-start; gap:11px; }
+    .gdpr-row input[type="checkbox"] { width:auto; margin-top:4px; accent-color:var(--primary); }
+    .gdpr-row label { font-size:0.83rem; font-weight:400 !important; color:var(--text-muted); cursor:pointer; }
+    @media(max-width:768px){ .contact-layout,.form-row{grid-template-columns:1fr;} }
+  </style>
+  <title>IoTopia – Contact Us</title>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-logo">IoT<span>opia</span></a>
+      <ul class="nav-links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="applications.html">Applications</a></li>
+        <li><a href="devices.html">Devices</a></li>
+        <li><a href="tutorials.html">Tutorials</a></li>
+        <li><a href="news.html">News</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="btn btn-primary nav-cta">Contact Us</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+  <header class="page-header">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><span aria-current="page">Contact Us</span></nav>
+      <h1>Get in Touch</h1>
+      <p>Have a question, suggestion or just want to say hello? We would love to hear from you.</p>
+    </div>
+  </header>
+  <main id="main-content">
+    <section class="section" style="background:var(--bg);" aria-labelledby="contact-heading">
+      <div class="container">
+        <h2 id="contact-heading" class="visually-hidden">Contact IoTopia</h2>
+        <div class="contact-layout">
+
+          <!-- Info cards + map placeholder (content plan) -->
+          <aside>
+            <span class="tag">Contact Information</span>
+            <h2 class="section-title" style="margin-bottom:24px;">We're here to help</h2>
+            <div class="info-cards">
+              <!-- Email info card -->
+              <div class="info-card reveal">
+                <div class="ic-icon" aria-hidden="true">📧</div>
+                <div class="ic-text">
+                  <h4>Email Us</h4>
+                  <p>hello@iotopia.co.uk<br>We reply within 48 hours.</p>
+                </div>
+              </div>
+              <!-- Location info card -->
+              <div class="info-card reveal delay-1">
+                <div class="ic-icon" aria-hidden="true">📍</div>
+                <div class="ic-text">
+                  <h4>Our Location</h4>
+                  <p>University of East London<br>Water Lane, London E15 4LZ</p>
+                </div>
+              </div>
+              <!-- Hours info card -->
+              <div class="info-card reveal delay-2">
+                <div class="ic-icon" aria-hidden="true">🕐</div>
+                <div class="ic-text">
+                  <h4>Response Times</h4>
+                  <p>Mon–Fri: 9am – 5pm GMT<br>All messages replied within 2 working days.</p>
+                </div>
+              </div>
+              <!-- GDPR info card -->
+              <div class="info-card reveal delay-3">
+                <div class="ic-icon" aria-hidden="true">🔒</div>
+                <div class="ic-text">
+                  <h4>Your Privacy (GDPR)</h4>
+                  <p>All data submitted via this form is processed in accordance with our Privacy Policy and the UK GDPR.</p>
+                </div>
+              </div>
+            </div>
+            <!-- Map placeholder (content plan) -->
+            <div class="map-block reveal" role="img" aria-label="Map showing University of East London location">
+              <span aria-hidden="true">📍</span>
+              <strong style="color:var(--white);">University of East London</strong>
+              <p>Water Lane, Stratford, London E15 4LZ</p>
+            </div>
+          </aside>
+
+          <!-- Contact form with JS real-time validation + GDPR checkbox (content plan) -->
+          <div class="form-card reveal">
+            <h3>Send Us a Message</h3>
+            <p>Fill in the form below and we will get back to you as soon as possible.</p>
+            <form id="contactForm" novalidate aria-label="Contact form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="name">Full Name <abbr title="required">*</abbr></label>
+                  <input type="text" id="name" name="name" placeholder="Your full name" autocomplete="name" aria-required="true"/>
+                  <span class="form-error" id="nameError" role="alert"></span>
+                </div>
+                <div class="form-group">
+                  <label for="email">Email Address <abbr title="required">*</abbr></label>
+                  <input type="email" id="email" name="email" placeholder="your@email.com" autocomplete="email" aria-required="true"/>
+                  <span class="form-error" id="emailError" role="alert"></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="subject">Subject <abbr title="required">*</abbr></label>
+                <input type="text" id="subject" name="subject" placeholder="What is your message about?" aria-required="true"/>
+                <span class="form-error" id="subjectError" role="alert"></span>
+              </div>
+              <div class="form-group">
+                <label for="topic">Topic (optional)</label>
+                <select id="topic" name="topic">
+                  <option value="">Select a topic</option>
+                  <option value="general">General Enquiry</option>
+                  <option value="tutorial">Tutorial Help</option>
+                  <option value="content">Content Suggestion</option>
+                  <option value="bug">Report an Issue</option>
+                  <option value="partnership">Partnership</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="message">Message <abbr title="required">*</abbr></label>
+                <textarea id="message" name="message" placeholder="Write your message here (minimum 20 characters)..." aria-required="true"></textarea>
+                <span class="form-error" id="messageError" role="alert"></span>
+              </div>
+              <!-- GDPR checkbox (content plan) -->
+              <div class="form-group gdpr-row">
+                <input type="checkbox" id="gdpr" name="gdpr" aria-required="true"/>
+                <label for="gdpr">I consent to IoTopia processing my personal data in accordance with the <a href="#">Privacy Policy</a> and UK GDPR. <abbr title="required">*</abbr></label>
+              </div>
+              <span class="form-error" id="gdprError" role="alert" style="display:block;margin-top:-12px;margin-bottom:14px;"></span>
+              <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:15px;" aria-label="Submit contact form">
+                Send Message <i class="fas fa-paper-plane" aria-hidden="true"></i>
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="index.html" class="nav-logo">IoT<span>opia</span></a><p>Your go-to resource for understanding the Internet of Things.</p><div class="social-links" style="margin-top:18px;"><a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a><a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a><a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a><a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a></div></div>
+        <div class="footer-col"><h4>Learn</h4><ul><li><a href="applications.html">What is IoT?</a></li><li><a href="applications.html">Applications</a></li><li><a href="devices.html">Devices</a></li><li><a href="tutorials.html">Tutorials</a></li></ul></div>
+        <div class="footer-col"><h4>Explore</h4><ul><li><a href="news.html">Latest News</a></li><li><a href="contact.html">FAQ</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+        <div class="footer-col"><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Cookie Policy</a></li><li><a href="#">Terms of Use</a></li><li><a href="#">Accessibility</a></li></ul></div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2025 IoTopia. Educational use only.</p><p>HTML5 &bull; CSS3 &bull; JavaScript</p></div>
+    </div>
+  </footer>
+  <button id="scrollTop" aria-label="Scroll back to top"><i class="fas fa-chevron-up"></i></button>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
